@@ -1,0 +1,24 @@
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: Start test test suite for Snakes and Ladders:1:The start tile is .
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: Test test suite for Snakes and Ladders:1:The start tile is  is successful.
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: End test test suite for Snakes and Ladders:1:The start tile is .
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: Start test test suite for Snakes and Ladders:3:The dice identifiers are .
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: Test test suite for Snakes and Ladders:3:The dice identifiers are  is successful.
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: End test test suite for Snakes and Ladders:3:The dice identifiers are .
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: Start test test suite for Snakes and Ladders:6:The location of dice 1 is .
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: Test test suite for Snakes and Ladders:6:The location of dice 1 is  is successful.
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: End test test suite for Snakes and Ladders:6:The location of dice 1 is .
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: Start test test suite for Snakes and Ladders:8:The start die is .
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: Test test suite for Snakes and Ladders:8:The start die is  is successful.
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: End test test suite for Snakes and Ladders:8:The start die is .
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: Start test test suite for Snakes and Ladders:10:Snake doesn't move player from tile 2 to 9 .
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: Test test suite for Snakes and Ladders:10:Snake doesn't move player from tile 2 to 9  is successful.
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: End test test suite for Snakes and Ladders:10:Snake doesn't move player from tile 2 to 9 .
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: Start test test suite for Snakes and Ladders:11:No snake - player stays at same tile .
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: Test test suite for Snakes and Ladders:11:No snake - player stays at same tile  is successful.
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: End test test suite for Snakes and Ladders:11:No snake - player stays at same tile .
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: Start test test suite for Snakes and Ladders:14:Ladder doesn't move player from tile 4 to 2 .
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: Test test suite for Snakes and Ladders:14:Ladder doesn't move player from tile 4 to 2  is successful.
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: End test test suite for Snakes and Ladders:14:Ladder doesn't move player from tile 4 to 2 .
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: Start test test suite for Snakes and Ladders:16:ladder_m_test exception UnknownTile .
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: Test test suite for Snakes and Ladders:16:ladder_m_test exception UnknownTile  is successful.
+2020-04-23T10:51:17+00:00 Alivas-MacBook-Pro.local#02 I: End test test suite for Snakes and Ladders:16:ladder_m_test exception UnknownTile .
