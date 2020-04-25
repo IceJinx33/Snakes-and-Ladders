@@ -2,5 +2,5 @@
 #require "yojson";;
 #require "ANSITerminal";;
 #directory "_build";;
+#load "common.cmo";;
 #load "board.cmo";;
-#load "state.cmo";;

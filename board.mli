@@ -40,6 +40,11 @@ type face = int
     must be between 0 and 1 (both inclusive). *)
 type prob = float
 
+
+(* [dice_roll die] is the result of rolling die given its probabilities and faces *)
+val dice_roll: t -> dice_id -> face
+
+
 (** [from_json json] is the adventure that [json] represents.
     Requires: [json] is a valid JSON adventure representation. *)
 val from_json : Yojson.Basic.t -> t
@@ -47,25 +52,25 @@ val from_json : Yojson.Basic.t -> t
 (** [tile_ids brd] is the list of tile identifiers in [brd]. The identifiers 
     of the tiles are arranged in the increasing order of the integer 
     representation of the identifiers in [brd].
-    Requires: [brd] is a a tree representing a valid game board. *)
+    Requires: [brd] is a a record representing a valid game board. *)
 val tile_ids : t -> tile_id list
 
 (** [start_tile brd] is the starting tile of [brd]. 
-    Requires: [brd] is a a tree representing a valid game board. *)
+    Requires: [brd] is a a record representing a valid game board. *)
 val start_tile : t -> tile_id
 
 (** [win_tile brd] is the winning tile of [brd] at the end of the game. 
-    Requires: [brd] is a a tree representing a valid game board. *)
+    Requires: [brd] is a a record representing a valid game board. *)
 val win_tile : t -> tile_id
 
 (** [dice_ids brd] is the list of dice identifiers in [brd]. 
-    Requires: [brd] is a a tree representing a valid game board. *)
+    Requires: [brd] is a a record representing a valid game board. *)
 val dice_ids : t -> dice_id list
 
 (** [die_vals brd d] is an association list where the faces of the die are
     the keys in the list while the corresponding probabilities of the face being 
     rolled are values associated with the keys. 
-    Requires: [brd] is a a tree representing a valid game board. 
+    Requires: [brd] is a a record representing a valid game board. 
     Raises: [UnknownDice d] if [d] is not the identifier of a die in [brd].
     Raises: [Failure "Invalid die"] if the length of the list of faces and the
     list of probabilities are not equal. *)
@@ -73,20 +78,20 @@ val die_vals : t -> dice_id -> (face * prob) list
 
 (** [find_locate brd d] is the identifier of the current tile location of the 
     dice with indentifier [d] in [brd]. 
-    Requires: [brd] is a a tree representing a valid game board.
+    Requires: [brd] is a a record representing a valid game board.
     Raises: [UnknownDice d] if [d] is not the identifier of a die in [brd]. *)
 val find_locate : t -> dice_id -> tile_id
 
 (** [start_die brd] is the identifier of the die the board game starts out
     with. 
-    Requires: [brd] is a a tree representing a valid game board. *)
+    Requires: [brd] is a a record representing a valid game board. *)
 val start_die : t -> dice_id
 
 (** [snake_move brd t] is the tile to which the player must move if there is
     a snake's head on tile [t]. If there is a snake's head on tile [t], 
     [snake_move brd t] is the tile at the snake's tail. Otherwise, 
     [snake_move brd t] is [t]. 
-    Requires: [brd] is a a tree representing a valid game board.
+    Requires: [brd] is a a record representing a valid game board.
     Raises: [UnknownTile t] if [t] is not the identifier of a tile in [brd]. *)
 val snake_move : t -> tile_id -> tile_id
 
@@ -94,7 +99,7 @@ val snake_move : t -> tile_id -> tile_id
     a ladder's bottom on tile [t]. If there is a ladder's bottom on tile [t], 
     [ladder_move brd t] is the tile at the ladder's top. Otherwise, 
     [ladder_move brd t] is [t]. 
-    Requires: [brd] is a a tree representing a valid game board.
+    Requires: [brd] is a a record representing a valid game board.
     Raises: [UnknownTile t] if [t] is not the identifier of a tile in [brd]. *)
 val ladder_move : t -> tile_id -> tile_id
 

@@ -1,6 +1,0 @@
-"Resource: /Users/luislondono/Documents/GitHub/Snakes-and-Ladders/board.ml": "\237\003=c\193\155Xj\208\233 \152\217\210\015\182"
-"Rule: ocaml: ml & cmi -> cmo (%=board )": "\180f\178c\132|\244\138RN\232\204\147\212\1430"
-"Rule: ocaml dependencies mli (%=board )": "\225\197\251\023\172\241L\134R$I\001IEf\022"
-"Resource: /Users/luislondono/Documents/GitHub/Snakes-and-Ladders/board.mli": "\030UZ\b\172\150\158\145\140*\232|\1961\199\169"
-"Rule: ocaml: mli -> cmi (%=board )": "n\254$\173\166\184\234`\224\202\153r\151\154'~"
-"Rule: ocaml dependencies ml (%=board )": "\186+\b*\155h\248\251\195z\198\180?G`\215"
