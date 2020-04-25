@@ -66,7 +66,7 @@ val dice_ids : t -> dice_id list
     the keys in the list while the corresponding probabilities of the face being 
     rolled are values associated with the keys. 
     Requires: [brd] is a a tree representing a valid game board. 
-    Raises: [UnknownDice d] if [d] is not the identifier of a die in [brd].
+    Raises: [UnknownDie d] if [d] is not the identifier of a die in [brd].
     Raises: [Failure "Invalid die"] if the length of the list of faces and the
     list of probabilities are not equal. *)
 val die_vals : t -> dice_id -> (face * prob) list
@@ -74,7 +74,7 @@ val die_vals : t -> dice_id -> (face * prob) list
 (** [find_locate brd d] is the identifier of the current tile location of the 
     dice with indentifier [d] in [brd]. 
     Requires: [brd] is a a tree representing a valid game board.
-    Raises: [UnknownDice d] if [d] is not the identifier of a die in [brd]. *)
+    Raises: [UnknownDie d] if [d] is not the identifier of a die in [brd]. *)
 val find_locate : t -> dice_id -> tile_id
 
 (** [start_die brd] is the identifier of the die the board game starts out

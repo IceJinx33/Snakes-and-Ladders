@@ -173,12 +173,12 @@ let boardTests = [
   dice_ids_test "The dice identifiers are " brd ["1"];
   die_vals_test "The die face and probabilities are " brd "1" 
     [(1,0.18);(3,0.17);(2,0.17);(4,0.16);(5,0.16);(6,0.16)];
-  "die_vals_test exception UnknownDice " >:: 
-  (fun _ -> assert_raises (UnknownDice "5") 
+  "die_vals_test exception UnknownDie " >:: 
+  (fun _ -> assert_raises (UnknownDie "5") 
       (fun () -> die_vals brd "5"));
   find_locate_test "The location of dice 1 is " brd "1" "1";
-  "find_locate_test exception UnknownDice " >:: 
-  (fun _ -> assert_raises (UnknownDice "5") 
+  "find_locate_test exception UnknownDie " >:: 
+  (fun _ -> assert_raises (UnknownDie "5") 
       (fun () -> find_locate brd "5"));
   start_die_test "The start die is " brd "1";
   snake_m_test "Snake moves player from tile 9 to 2 " brd "9" "2";
