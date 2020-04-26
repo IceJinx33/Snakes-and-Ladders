@@ -96,7 +96,7 @@ let brd = Board.from_json json
 
 let boardTests = [
   dice_ids_test "The list of dice is " brd ["1";"2";"3"];
-  find_locate_test "The location of dice 1 is " brd "1" 1;
+  find_locate_test "The location of dice 1 is " brd "1" 0;
   "find_locate_test exception UnknownDie " >:: 
   (fun _ -> assert_raises (UnknownDie "5") 
       (fun () -> find_locate brd "5"));
@@ -114,7 +114,7 @@ let boardTests = [
   add_m_test "Ladder doesn't move player from tile 4 to 3 " brd 4 4;
   add_m_test "No ladder - player stays at same tile " brd 8 8;
   b_size_test "Size of the board is " brd 64;
-  get_die_t_test "Die at tile 1 is " brd 1 (Some "1");
+  get_die_t_test "Die at tile 0 is " brd 0 (Some "1");
   get_die_t_test "Die at tile 5 is " brd 5 None;
   {|get_die_t_test Failure "Multiple Dice occupying one tile!" |} >:: 
   (fun _ -> assert_raises (Failure "Multiple Dice occupying one tile!") 

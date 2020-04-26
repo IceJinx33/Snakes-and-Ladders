@@ -118,7 +118,7 @@ let rec make_move brd st print_prompt: unit =
         make_move brd st true;
     | exception Malformed -> 
         ANSITerminal.(print_string [red] 
-        ("\nCommand was malformed, try again \n"));
+        ("Command was malformed, try again \n"));
         print_string  "> ";
         make_move brd st false 
     end
