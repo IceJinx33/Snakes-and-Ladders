@@ -3,5 +3,6 @@ PKG oUnit
 PKG yojson
 PKG state
 PKG board
+PKG main
 PKG command
 PKG ANSITerminal

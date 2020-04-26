@@ -1,3 +1,4 @@
+open Board
 (********************************************************************
    Representation of a snakes and ladder's game state, a snapshot of
    a game in progress.
@@ -22,3 +23,7 @@ type result =
 val init_state : Board.t -> int -> t
 val roll : Board.t -> t -> result 
 val use_die: t -> Board.dice_id -> result  
+val curr_pos: t -> Board.tile_id
+val last_roll: t -> string
+val check_won: t -> bool 
+val get_curr_player: t -> int 

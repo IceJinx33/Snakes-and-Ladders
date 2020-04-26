@@ -6,7 +6,7 @@ let rec select_elem x lst =
 let swap_elem ind elm lst = 
   let rec swap_helper (ind:int) (elm:'a) (acc:'a list) (lst:'a list) =
     match lst with
-    | [] -> []
+    | [] -> failwith "index out of bounds"
     | hd::tl -> if ind = 0 then List.concat [List.rev (elm::acc);tl]
     else swap_helper (ind-1) elm (hd::acc) tl
   in

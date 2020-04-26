@@ -57,17 +57,18 @@ let roll brd st : result =
   let die_to_roll = curr_die st in
   let roll_val = Board.dice_roll brd die_to_roll in
   let roll_landed = curr_pos + roll_val in
-  if roll_landed > Board.get_size brd then
+  if roll_landed < 0 || roll_landed >= (Board.get_size brd) then
   Roll_Not_Valid {
     st with
     current_player = next_player;
     last_roll = Some roll_val;
   } 
-  else
+  else 
   let tile_landed = Board.additional_move brd roll_landed in 
+  let () = print_int tile_landed in
+  let positions' = swap_elem st.current_player tile_landed st.player_positions in
   let new_die = Board.get_die_at_tile brd tile_landed in
-  let positions' = swap_elem tile_landed st.current_player st.player_positions in
-  if tile_landed = roll_landed then
+  if (tile_landed = roll_landed) then
     match new_die with
     (* Rolled, No events, No new dice *)
     | None -> Normal_Roll {
@@ -75,15 +76,20 @@ let roll brd st : result =
       current_player = next_player;
       player_positions = positions';
       last_roll = Some roll_val;
-      won = tile_landed = Board.get_size brd
+      won = (tile_landed = Board.get_size brd -1);
     }
     (* Rolled, No events, Found new dice *)
-    | Some d -> Found_New_Die {
+    | Some d -> 
+      let player_dice = List.nth st.dice st.current_player in
+      let player_dice' = d::player_dice in
+      let dice' = swap_elem st.current_player player_dice' st.dice in
+      Found_New_Die {
       st with 
       current_player = next_player;
+      dice = dice';
       player_positions = positions';
       last_roll = Some roll_val;
-      won = tile_landed = Board.get_size brd
+      won = tile_landed = Board.get_size brd -1
     }
   else if tile_landed > roll_landed then
   (* Went up ladder *)
@@ -92,7 +98,7 @@ let roll brd st : result =
       current_player = next_player;
       player_positions = positions';
       last_roll = Some roll_val;
-      won = tile_landed = Board.get_size brd
+      won = tile_landed = Board.get_size brd -1
     }
   else
   (* Went down *)
@@ -116,3 +122,14 @@ let use_die st d_id : result =
   selected_die = selected_die'; 
    }
   else Invalid_Die st  
+
+let curr_pos st = List.nth st.player_positions st.current_player
+
+let last_roll st = 
+  match st.last_roll with
+  | Some x -> string_of_int x
+  | _ -> "None"
+
+let check_won st = st.won
+
+let get_curr_player st = st.current_player

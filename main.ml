@@ -3,69 +3,76 @@ open State
 open Command
 open Yojson.Basic.Util
 
-
 let indent = "    "
 
-(*     
-let handle_die_choice board st dice_id = 
+let check_win_cond st = 
+  if check_won st then
+  let curr_player_str = string_of_int (State.get_curr_player st) in
+  ANSITerminal.(print_string [green] ("\nCongratulations! " ^curr_player_str^ " won!\n"));
+  exit 0;
+  else ()
+
+let handle_pick_die board st dice_id = 
     match State.use_die st dice_id  with 
-    |Invalid_Die st -> ANSITerminal.(print_string [red]
+    | Invalid_Die st' -> ANSITerminal.(print_string [red]
      ("\nThat die is unavaiable, try again. \n"));
-       print_string  ">"; make_move st;
-    |Changed_Die st -> ANSITerminal.(print_string [red]
+       print_string  ">"; st'
+    | Changed_Die st' -> ANSITerminal.(print_string [red]
      ("\n New dice chosen \n"));
-       print_string  ">";
-      make_move st ;
-    | _ -> () *)
+       print_string  ">"; st'
+    | _ -> st
 
-(* let execute cmd st board =    
-  let handle_roll board st = 
-  match State.roll board st with 
-    |Normal_Roll st -> make_move st;
-    |Slid_Down_Snake st -> ANSITerminal.(print_string [red] 
-    ("\nYou've slide down a snake \n")) ;  print_string  ">"; make_move st;
-    |Went_Up_Ladder st -> ANSITerminal.(print_string [red] 
-    ("\nYou've gone up a ladder\n")) ;  print_string  ">"; make_move st;
-    |Found_New_Die  st -> ANSITerminal.(print_string [red] 
-    ("\nYou found a new die \n")) ;  print_string  ">"; make_move st;
-    |Roll_Not_Valid st -> ANSITerminal.(print_string [red] 
-    ("\n That roll is not valid, 
-    your roll must be the exact spaces until the end \n")) ;
-    print_string  ">"; make_move st;
-    |_ -> ()
-  in 
-  match cmd with 
-    | Quit -> exit 0
-    | Roll -> handle_roll board st  
-    | Pick_Die d_id ->  handle_die_choice board st d_id ; *)
+let handle_roll board st = 
+  let roll_res = State.roll board st in
+  let print_roll_res st = 
+    let roll_val = State.last_roll st in
+      ANSITerminal.(print_string [red] ("\nYou rolled a "^roll_val^"\n"));
+  in
+  match roll_res with 
+    | Normal_Roll st' -> 
+      print_roll_res st';
+      st'
+    | Slid_Down_Snake st' -> 
+      print_roll_res st';
+      ANSITerminal.(print_string [red] ("\nYou've slide down a snake \n")) ;  st'
+    | Went_Up_Ladder st' -> 
+      print_roll_res st';
+      ANSITerminal.(print_string [red] ("\nYou've gone up a ladder\n")) ;
+      st'
+    | Found_New_Die  st' -> 
+      print_roll_res st';
+      ANSITerminal.(print_string [red] ("\nYou found a new die \n")) ;
+      st'
+    | Roll_Not_Valid st' -> 
+      print_roll_res st';
+      ANSITerminal.(print_string [red] ("\n That roll is not valid, your roll must be the exact spaces until the end \n")) ;
+      st'
+    |_ -> st
 
-let parse_input str = 
-    match Command.parse str with
-    | Quit -> Quit
-    | Roll -> Roll
-    (* | exception Malformed -> raise Malformed  *)
-    (* | exception Empty -> raise Empty *)
-    (* | _ -> failwith "Command is Unimplemented" *)
 
-let print_malformed:()= 
-  ANSITerminal.(print_string [red] ("\nCommand was malformed, try again \n"));
-  
-let print_empty:() =
-  ANSITerminal.(print_string [red] ("\n Did not choose a die please try again \n"));
-
-let rec make_move st board: unit = 
+let rec make_move st brd: unit = 
+  check_win_cond st;
+  let curr_pos_str = string_of_int (State.curr_pos st) in 
+  ANSITerminal.(print_string [white] ("\n You're on tile "^curr_pos_str));
+  ANSITerminal.(print_string [red] ("\n Please choose an action\n"));
  match read_line () with
   | exception End_of_file -> ()
   | input -> 
-    let cmd = parse_input input in
-    match cmd with
-    | Quit ->  exit 0;
-    | Malformed -> print_malformed; make_move st board;
-    | Empty ->  print_empty; make_move st board;
-    | Pick_Die -> 
+    begin
+    match Command.parse input with
+    | Quit ->  exit 0
+    | Pick_Die d_id -> 
+      let st' = handle_pick_die brd st d_id in
+      make_move st' brd
     | Roll ->  
-    | move -> begin 
-      match execute cmd st board with
+      let () = print_endline "parsed correctly" in
+      let st' = handle_roll brd st in
+      let () = print_endline "Finished roll" in
+      make_move st' brd;
+    | exception Empty ->  
+      print_string ">";
+      make_move st brd
+    | exception Malformed ->   ANSITerminal.(print_string [red] ("\nCommand was malformed, try again \n")); make_move st brd
     end
     
 
@@ -81,7 +88,7 @@ let play_game (f:string): unit =
     let () = print_string indent in
     ANSITerminal.(print_string [green] ("Successully loaded "^f^"!\n\n"));
     let board = Board.from_json j in
-    let st = State.init_state board in
+    let st = State.init_state board 1 in
     make_move st board
 
   (* with e -> failwith ("Lets try a valid file name instead of: " ^ f) *)

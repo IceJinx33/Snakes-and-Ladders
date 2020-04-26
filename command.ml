@@ -30,14 +30,17 @@ let parse str : command =
 
   match nospaces with
   | [] -> raise Empty
-  | [cmd] -> (
+  | [cmd] -> 
+    begin
     match cmd with
       |"quit" -> Quit
       |"roll" -> Roll
       (* | "inventory" -> Inventory *)
       | _ -> raise Malformed
-    )
-  | cmd::die_phrase -> (match cmd with
+    end
+  | cmd::die_phrase -> 
+    begin
+    match cmd with
       |"die" -> if List.length die_phrase == 0 then raise Empty else Pick_Die (List.hd die_phrase)
       |_-> raise Malformed
-    )
+    end
