@@ -22,7 +22,7 @@ check:
 	bash checkenv.sh && bash checktypes.sh
 
 zip:
-	zip sandn.zip *.ml* *.json _tags Makefile
+	zip snakes-and-ladders.zip *.ml* *.json _tags Makefile
 	
 clean:
 	ocamlbuild -clean
