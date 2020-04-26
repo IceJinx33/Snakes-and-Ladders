@@ -22,9 +22,28 @@ let init_state board nplayers =
     last_roll = None
   }
 
+let check_won st = st.won
+
+let n_players st = st.num_players
+
+let get_curr_player st = st.current_player
+
+let dice_list st = st.dice
+
 let selected_die st = st.selected_die
 
+let players_pos st = st.player_positions
+
+let last_roll st = 
+  match st.last_roll with
+  | Some x -> string_of_int x
+  | _ -> "None"
+
+let curr_pos st = List.nth st.player_positions st.current_player
+
 let curr_die st: dice_id = List.nth st.selected_die st.current_player 
+
+let curr_dice st: dice_id list = List.nth st.dice st.current_player 
 
 type result = 
   | Changed_Die of t
@@ -35,21 +54,13 @@ type result =
   | Roll_Not_Valid of t
   | Invalid_Die of t
 
+(* [pp_list_list ] concatannates elements of a list with spaces after each 
+element*) 
 let rec pp_list_list lst acc = 
 match lst with 
 | [] -> acc 
 | [h] -> acc^" "^(pp_list pp_string h)
 | h1::(h2::t as t') -> pp_list_list t' (acc^" "^(pp_list pp_string h1)) 
-
-(** [pp_state st] is the string representation of the state [st]. *)
-let pp_state st = 
-"{ won : " ^ string_of_bool (st.won) ^ " , no. of players : " ^ 
- string_of_int (st.num_players) ^ " , current player : " ^ 
- string_of_int (st.current_player) ^ " , list of dice : " ^ 
- pp_list_list (st.dice) "" ^ " , selected die : " ^ 
- (pp_list pp_string st.selected_die) ^ " , player pos : " ^ 
- (pp_list string_of_int st.player_positions) ^ " , last roll : " ^ 
- extract_opt (st.last_roll)
 
 let roll brd st : result = 
   let next_player =  (st.current_player + 1) mod st.num_players in
@@ -108,9 +119,6 @@ let roll brd st : result =
     player_positions = positions';
     last_roll = Some roll_val;
   }
-  
-  
-
 
 let use_die st d_id : result = 
   let player_diceids = List.nth st.dice st.current_player in
@@ -123,13 +131,12 @@ let use_die st d_id : result =
    }
   else Invalid_Die st  
 
-let curr_pos st = List.nth st.player_positions st.current_player
-
-let last_roll st = 
-  match st.last_roll with
-  | Some x -> string_of_int x
-  | _ -> "None"
-
-let check_won st = st.won
-
-let get_curr_player st = st.current_player
+(** [pp_state st] is the string representation of the state [st]. *)
+let pp_state st = 
+"{ won : " ^ string_of_bool (st.won) ^ " , no. of players : " ^ 
+ string_of_int (st.num_players) ^ " , current player : " ^ 
+ string_of_int (st.current_player) ^ " , list of dice : " ^ 
+ pp_list_list (st.dice) "" ^ " , selected die : " ^ 
+ (pp_list pp_string st.selected_die) ^ " , player pos : " ^ 
+ (pp_list string_of_int st.player_positions) ^ " , last roll : " ^ 
+ extract_opt (st.last_roll) ^ " }"

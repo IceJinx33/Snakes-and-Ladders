@@ -1,8 +1,17 @@
+(********************************************************************
+  Holds commonly used functions
+ ********************************************************************)
+
+
+(* [select_elem] takes and index and a list and returnns the element at that 
+index *)
 let rec select_elem x lst = 
   match lst with
   | hd::tl -> if x = 0 then hd else select_elem (x-1) tl
   | _ -> failwith "index out of bounds"
 
+(* [swap_elem] takes an index and element and a list, then swaps out the 
+element at the given index  *)
 let swap_elem ind elm lst = 
   let rec swap_helper (ind:int) (elm:'a) (acc:'a list) (lst:'a list) =
     match lst with
@@ -26,8 +35,14 @@ let cmp_set_like_lists lst1 lst2 =
   &&
   uniq1 = uniq2
 
-  (** [pp_string s] pretty-prints string [s]. *)
+(** [pp_string s] pretty-prints string [s]. *)
 let pp_string s = s
+
+(** [pp_string s] pretty-prints int [i]. *)
+let pp_int i = string_of_int i
+
+(** [pp_string s] pretty-prints float [f]. *)
+let pp_float f = string_of_float f
 
 (** [pp_list pp_elt lst] pretty-prints list [lst], using [pp_elt]
     to pretty-print each element of [lst]. *)
@@ -47,3 +62,9 @@ let pp_list pp_elt lst =
   match x with 
   | None -> "None"
   | Some v -> "Some "^(string_of_int v)
+
+(** [extract_opt] is the string representation of an string option. *)
+  let extract_opt_str x = 
+  match x with 
+  | None -> "None"
+  | Some v -> "Some "^v
