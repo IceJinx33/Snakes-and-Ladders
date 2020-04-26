@@ -40,12 +40,13 @@ let handle_die_choice board st dice_id =
     | Pick_Die d_id ->  handle_die_choice board st d_id ; *)
 
 let parse_input str = 
-    match Command.parse str with
+    match parse str with
     | Quit -> Quit
     | Roll -> Roll
-    (* | exception Malformed -> raise Malformed  *)
-    (* | exception Empty -> raise Empty *)
-    (* | _ -> failwith "Command is Unimplemented" *)
+    | Pick_Die d_id -> Pick_Die d_id
+    | exception Malformed -> raise Malformed 
+    | exception Empty -> raise Empty
+    | _ -> failwith "Command is Unimplemented"
 
 let print_malformed:()= 
   ANSITerminal.(print_string [red] ("\nCommand was malformed, try again \n"));

@@ -1,4 +1,4 @@
-MODULES=board
+MODULES=board command common state main
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)

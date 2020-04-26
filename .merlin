@@ -1,7 +1,7 @@
 B _build
 PKG oUnit
 PKG yojson
-PKG common
-PKG board
 PKG state
+PKG board
+PKG command
 PKG ANSITerminal

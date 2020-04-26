@@ -1,7 +1,5 @@
 {
   "tiles": 64,
-  "start tile": 1,
-  "win tile": 64,
   "dice": [
     {
       "die id": "1",
