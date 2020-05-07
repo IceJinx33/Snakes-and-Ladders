@@ -34,9 +34,9 @@ type die = {
 
 (** A snake on the board. If a player lands on a tile with [id] = 
     [head] then the player is moved to a tile with [id] = [tail]. *)
-  (** [s_id] is the identifier of the snake. *)
-  (** [head] is the head of the snake. *)
-  (** [tail] is the tail of the snake. *)
+(** [s_id] is the identifier of the snake. *)
+(** [head] is the head of the snake. *)
+(** [tail] is the tail of the snake. *)
 type snake = {
   s_id: snake_id;
   head: tile_id;
@@ -55,11 +55,11 @@ type ladder = {
 }
 
 (** A record representing a game board.
-  [dice] is the list of dice in the game.
-  [snakes] is the list of snakes on the board.
-  [ladders] is the list of ladders on the board.
-  [board_size] is size of the board. It is a square number. 
-  [start_die] is the starting die in the game.*)
+    [dice] is the list of dice in the game.
+    [snakes] is the list of snakes on the board.
+    [ladders] is the list of ladders on the board.
+    [board_size] is size of the board. It is a square number. 
+    [start_die] is the starting die in the game.*)
 type t = {
   dice: die list;
   snakes: snake list;
@@ -100,17 +100,16 @@ let board_of_json json =
   let start_die_id = json |> member "start die" |> to_string in
   let start_die' = List.find (fun d-> d.d_id = start_die_id) dice' in
   {
-  board_size = json |> member "tiles" |> to_int;
-  dice = dice';
-  start_die = start_die';
-  snakes = json |> member "snakes" |> to_list |> List.map snake_of_json;
-  ladders = json |> member "ladders" |> to_list |> List.map ladder_of_json;
+    board_size = json |> member "tiles" |> to_int;
+    dice = dice';
+    start_die = start_die';
+    snakes = json |> member "snakes" |> to_list |> List.map snake_of_json;
+    ladders = json |> member "ladders" |> to_list |> List.map ladder_of_json;
   }
 
 let from_json json = 
   try board_of_json json
   with Type_error (s, _) -> failwith ("Parsing error: " ^ s)
-
 
 let dice_ids brd = 
   List.map (fun t -> t.d_id) brd.dice
@@ -127,12 +126,12 @@ let additional_move brd pos =
   if pos < 0 || pos >= brd.board_size 
   then raise (TileOutOfRange pos)
   else
-  let snake_at_tile = List.filter (fun s -> s.head = pos) brd.snakes in
-  let ladder_at_tile = List.filter (fun l -> l.bottom = pos) brd.ladders in
-  match snake_at_tile,ladder_at_tile with
-  | [s],_ -> s.tail
-  | _,[l] -> l.top
-  | _ -> pos
+    let snake_at_tile = List.filter (fun s -> s.head = pos) brd.snakes in
+    let ladder_at_tile = List.filter (fun l -> l.bottom = pos) brd.ladders in
+    match snake_at_tile,ladder_at_tile with
+    | [s],_ -> s.tail
+    | _,[l] -> l.top
+    | _ -> pos
 
 (** [get_die] checks list of dice and returns die given the die_id. *)
 let get_die brd d_id = 
@@ -147,10 +146,10 @@ let dice_roll brd d_id =
   let die = get_die brd d_id in
   let rec rollhelper i (x:float) lb ub faces probs  =
     if x > lb && x <= ub then 
-    List.nth faces i
+      List.nth faces i
     else
-    let ub' = ub +. List.nth probs (i+1) in
-    rollhelper (i+1) x ub ub' faces probs
+      let ub' = ub +. List.nth probs (i+1) in
+      rollhelper (i+1) x ub ub' faces probs
   in
   let () = Random.self_init () in
   let tgt = Random.float 1.0 in
@@ -174,3 +173,17 @@ let get_faces brd d_id=
 let get_probs brd d_id=
   let d = get_die brd d_id in
   d.probs
+
+let get_ladders_tiles brd = 
+  let rec get_ladder_helper lst acc = 
+    match lst with 
+    | [] -> acc 
+    | hd::tl -> get_ladder_helper tl ((hd.bottom, hd.top)::acc) in 
+  get_ladder_helper brd.ladders []
+
+let get_snakes_tiles brd = 
+  let rec get_snake_helper lst acc = 
+    match lst with 
+    | [] -> acc 
+    | hd::tl -> get_snake_helper tl ((hd.tail, hd.head)::acc) in 
+  get_snake_helper brd.snakes []

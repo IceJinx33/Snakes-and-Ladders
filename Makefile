@@ -1,4 +1,4 @@
-MODULES=board command common state main
+MODULES=board command common state main gui
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
@@ -29,4 +29,4 @@ clean:
 	rm -rf doc.public doc.private sandn.zip
 
 install:
-	opam install ANSITerminal yojson oUnit
+	opam install ANSITerminal yojson oUnit Graphics

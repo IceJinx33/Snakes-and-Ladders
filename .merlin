@@ -6,3 +6,4 @@ PKG board
 PKG main
 PKG command
 PKG ANSITerminal
+PKG Graphics

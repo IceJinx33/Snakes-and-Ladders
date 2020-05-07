@@ -61,7 +61,7 @@ val find_locate : t -> dice_id -> tile_id
 val additional_move: t -> tile_id -> tile_id
 
 (** [dice_roll brd d_id] is the result of rolling die with identifier 
-[d_id] given its probabilities and faces *)
+    [d_id] given its probabilities and faces *)
 val dice_roll: t -> dice_id -> face
 
 (** [start_die brd] is the identifier of the die the board game starts out
@@ -75,7 +75,7 @@ val start_die : t -> dice_id
 val get_faces : t -> dice_id -> face list
 
 (** [get_probs brd d_id] is the list of probabilities correspond to the sides 
-of the die in the order that get_faces specifies for die [d_id] on board [brd].
+    of the die in the order that get_faces specifies for die [d_id] on board [brd].
     Requires: [brd] is a a record representing a valid game board. *)
 val get_probs : t -> dice_id -> prob list
 
@@ -83,9 +83,18 @@ val get_probs : t -> dice_id -> prob list
 val get_size: t -> int
 
 (** [get_die_at_tile brd pos] is [Some d] if there is some dice with 
-identifier [d] on tile [pos] and adds that die to the players list of avaliable 
-die, and is [None] if there is no die on tile [pos].
-Raises: [Failure "Multiple Dice occupying one tile!"] if there are multiple die 
-on one tile. *)
+    identifier [d] on tile [pos] and adds that die to the players list of avaliable 
+    die, and is [None] if there is no die on tile [pos].
+    Raises: [Failure "Multiple Dice occupying one tile!"] if there are multiple die 
+    on one tile. *)
 val get_die_at_tile: t -> tile_id -> dice_id option
 
+(** [get_ladders_tiles brd] is a list of tuples where each tuple contains 
+    the identifiers of the bottom and top tiles of each ladder in [brd] in that 
+    order. *)
+val get_ladders_tiles: t -> (tile_id * tile_id) list
+
+(** [get_snakes_tiles brd] is a list of tuples where each tuple contains 
+    the identifiers of the tail and head tiles of each snake in [brd] in that 
+    order. *)
+val get_snakes_tiles: t -> (tile_id * tile_id) list
