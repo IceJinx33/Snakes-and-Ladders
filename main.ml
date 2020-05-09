@@ -8,7 +8,7 @@ open Gui
 (*[check_win_cond st] checks if any player has fulfilled the winning condition*)
 let check_win_cond st = 
   if check_won st then
-    let curr_player_str = string_of_int (State.get_curr_player st) in
+    let curr_player_str = string_of_int ((State.get_curr_player st)+1) in
     ANSITerminal.(print_string [green] 
                     ("\nCongratulations! " ^curr_player_str^ " won!\n"));
     exit 0;
@@ -31,25 +31,31 @@ let handle_pick_die board st dice_id =
 (* [handle_roll board st] takes the parsed command and calls the state to update
    according to what the rolled tile contains (ie. snake, ladder, die, nothing) *)
 let handle_roll board st = 
+
   let roll_res = State.roll board st in
   let print_roll_res st = 
     let roll_val = State.last_roll st in
-    ANSITerminal.(print_string [red] ("\nYou rolled a "^roll_val^"\n"));
+    ANSITerminal.(print_string [white] ("\nYou rolled a "^roll_val^"\n"));
   in
+  let new_tile st= State.prev_players_position st in 
   match roll_res with 
   | Normal_Roll st' -> 
     print_roll_res st';
     st'
   | Slid_Down_Snake st' -> 
     print_roll_res st';
-    ANSITerminal.(print_string [red] ("\nYou've slide down a snake \n")) ; st'
+    ANSITerminal.(print_string [red] 
+                    ("You've slide down a snake to "^
+                     new_tile st'^"\n")) ; st'
   | Went_Up_Ladder st' -> 
     print_roll_res st';
-    ANSITerminal.(print_string [red] ("\nYou've gone up a ladder\n")) ;
+    ANSITerminal.(print_string [blue] 
+                    ("You've gone up a ladder to "^ 
+                     new_tile st'^"\n")) ;
     st'
   | Found_New_Die  st' -> 
     print_roll_res st';
-    ANSITerminal.(print_string [red] ("\nYou found a new die \n")) ;
+    ANSITerminal.(print_string [red] ("You found a new die \n")) ;
     st'
   | Roll_Not_Valid st' -> 
     print_roll_res st';
@@ -75,6 +81,7 @@ let handle_show_dice brd st =
 (* [print_move_pompt brd st] prints out the current tile location and the 
    faces of the selected die to the current player  *)
 let print_move_prompt brd st = 
+  let curr_player_str = string_of_int ((State.get_curr_player st)+1) in
   let curr_pos_str = string_of_int (State.curr_pos st) in 
   let curr_die_did = State.curr_die st in 
   let curr_die_faces = get_faces brd curr_die_did in
@@ -82,6 +89,7 @@ let print_move_prompt brd st =
   let pp_faces = pp_list pp_int curr_die_faces in
   let pp_probs = pp_list pp_float curr_die_probs in
   ANSITerminal.(
+    print_string [green] ("\nPlayer "^ curr_player_str ^" \n");
     print_string [white] ("You're on tile "^curr_pos_str^".\n");
     print_string [white] ("Currently in your hand is die "^curr_die_did^".\n");
     print_string [white] ("It has faces: "^pp_faces^" with respective "^
@@ -161,9 +169,15 @@ let play_game (f:string): unit =
     ANSITerminal.(print_string [yellow] ("Loading "^f^"...\n"));
     let j = Yojson.Basic.from_file f in
     ANSITerminal.(print_string [green] ("Successully loaded "^f^"!\n\n"));
+    print_endline "Please enter the name of the game file you want to load.\n";
+    print_string  "> ";
     let board = Board.from_json j in
-    let nplayers = 1 in
-    let st = State.init_state board nplayers in
+    let read_ints () = 
+      print_endline "Please enter the number of players";
+      print_string  "> ";
+      int_of_string (read_line ()) in 
+    let nplayers : int  = read_ints ()in
+    let st = State.init_state board nplayers  in
     print_introduction board f nplayers;
     make_move board st true
   with e -> 

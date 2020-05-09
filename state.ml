@@ -2,27 +2,35 @@ open Common
 open Board
 
 type t = {
-  won: bool;
+  won: bool list;
+  bot: bool;
   num_players: int;
   current_player: int;
   dice: dice_id list list;
   selected_die: dice_id list;
   player_positions: tile_id list;
   last_roll: int option;
+  prev_players_position: int option; 
 }
+
+let botlst bot nplayers = 
+  for 1 to nplayers do false :: bot uhh then set the state to this 
 
 let init_state board nplayers =
   {
+    bot= [true];
     won = false;
     num_players = nplayers;
     current_player = 0;
     dice = List.init nplayers (fun x-> [Board.start_die board]);
     selected_die = List.init nplayers (fun x-> Board.start_die board);
     player_positions = List.init nplayers (fun x -> 0);
-    last_roll = None
+    last_roll = None;
+    prev_players_position = None;
   }
-
 let check_won st = st.won
+
+let check_bot st = st.bot
 
 let n_players st = st.num_players
 
@@ -39,11 +47,28 @@ let last_roll st =
   | Some x -> string_of_int x
   | _ -> "None"
 
+let prev_players_position st = 
+  match st.prev_players_position with
+  | Some x -> string_of_int x
+  | _ -> "None"
+
+let set_bot st : st = 
+  let st.
+        {
+          st with 
+          current_player = next_player;
+          player_positions = positions';
+          last_roll = Some roll_val;
+          won = (tile_landed = Board.get_size brd -1);
+          prev_players_position = Some tile_landed;
+        }
+
 let curr_pos st = List.nth st.player_positions st.current_player
 
 let curr_die st: dice_id = List.nth st.selected_die st.current_player 
 
 let curr_dice st: dice_id list = List.nth st.dice st.current_player 
+
 
 type result = 
   | Changed_Die of t
@@ -63,6 +88,7 @@ let rec pp_list_list lst acc =
   | h1::(h2::t as t') -> pp_list_list t' (acc^" "^(pp_list pp_string h1)) 
 
 let roll brd st : result = 
+
   let next_player =  (st.current_player + 1) mod st.num_players in
   let curr_pos = List.nth st.player_positions st.current_player in
   let die_to_roll = curr_die st in
@@ -73,6 +99,8 @@ let roll brd st : result =
       st with
       current_player = next_player;
       last_roll = Some roll_val;
+      prev_players_position = Some curr_pos;
+
     } 
   else 
     let tile_landed = Board.additional_move brd roll_landed in 
@@ -88,6 +116,7 @@ let roll brd st : result =
           player_positions = positions';
           last_roll = Some roll_val;
           won = (tile_landed = Board.get_size brd -1);
+          prev_players_position = Some tile_landed;
         }
       (* Rolled, No events, Found new dice *)
       | Some d -> 
@@ -100,7 +129,8 @@ let roll brd st : result =
           dice = dice';
           player_positions = positions';
           last_roll = Some roll_val;
-          won = tile_landed = Board.get_size brd -1
+          won = tile_landed = Board.get_size brd -1;
+          prev_players_position = Some tile_landed
         }
     else if tile_landed > roll_landed then
       (* Went up ladder *)
@@ -109,7 +139,8 @@ let roll brd st : result =
         current_player = next_player;
         player_positions = positions';
         last_roll = Some roll_val;
-        won = tile_landed = Board.get_size brd -1
+        won = tile_landed = Board.get_size brd -1;
+        prev_players_position = Some tile_landed
       }
     else
       (* Went down *)
@@ -118,6 +149,7 @@ let roll brd st : result =
         current_player = next_player;
         player_positions = positions';
         last_roll = Some roll_val;
+        prev_players_position = Some tile_landed;
       }
 
 let use_die st d_id : result = 
@@ -130,6 +162,14 @@ let use_die st d_id : result =
                  selected_die = selected_die'; 
                 }
   else Invalid_Die st  
+
+(* let rolled_tile_result_str st = 
+   let player_that_just_rolled st= 
+    let current_reduced = (st.current_player - 1 ) mod st.num_players in
+    if current_reduced <= 0 then st.num_players else current_reduced
+   in
+   let curr_pos st = List.nth st.player_positions (player_that_just_rolled st) in
+   try string_of_int (curr_pos st) with _ -> "rolled_tile_result error" *)
 
 (** [pp_state st] is the string representation of the state [st]. *)
 let pp_state st = 
