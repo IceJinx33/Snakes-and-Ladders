@@ -39,7 +39,7 @@ val use_die: t -> Board.dice_id -> result
 (** [check_won st] checks if any player has reached the winning tile. *)
 val check_won: t -> bool 
 
-val check_bot: t -> bool
+val check_bot: t -> bool list
 
 (** [n_players st] is the number of players in the game state [st]. *)
 val n_players: t -> int

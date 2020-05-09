@@ -2,8 +2,8 @@ open Common
 open Board
 
 type t = {
-  won: bool list;
-  bot: bool;
+  won: bool;
+  bot: bool list;
   num_players: int;
   current_player: int;
   dice: dice_id list list;
@@ -13,8 +13,8 @@ type t = {
   prev_players_position: int option; 
 }
 
-let botlst bot nplayers = 
-  for 1 to nplayers do false :: bot uhh then set the state to this 
+(* let botlst bot nplayers = 
+   for 1 to nplayers do false :: bot uhh then set the state to this  *)
 
 let init_state board nplayers =
   {
@@ -51,17 +51,16 @@ let prev_players_position st =
   match st.prev_players_position with
   | Some x -> string_of_int x
   | _ -> "None"
-
+(* 
 let set_bot st : st = 
-  let st.
-        {
-          st with 
-          current_player = next_player;
-          player_positions = positions';
-          last_roll = Some roll_val;
-          won = (tile_landed = Board.get_size brd -1);
-          prev_players_position = Some tile_landed;
-        }
+  {
+    st with 
+    current_player = next_player;
+    player_positions = positions';
+    last_roll = Some roll_val;
+    won = (tile_landed = Board.get_size brd -1);
+    prev_players_position = Some tile_landed;
+  } *)
 
 let curr_pos st = List.nth st.player_positions st.current_player
 
