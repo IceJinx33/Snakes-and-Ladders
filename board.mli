@@ -86,7 +86,7 @@ val get_faces : t -> dice_id -> face list
     in [brd]. *)
 val get_probs : t -> dice_id -> prob list
 
-(** [get_size brd] is the number of tiles on the board brd]. 
+(** [get_size brd] is the number of tiles on the board [brd]. 
     Requires: [brd] is a a record representing a valid game board. *)
 val get_size: t -> int
 
