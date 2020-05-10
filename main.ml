@@ -74,7 +74,7 @@ let handle_roll brd st =
                     (String.concat "" ["\n"; "That roll is not valid,";
                                        "you will exceed the number of tiles ";
                                        "on the board and go into the ";
-                                       "unknown \n"])) ;
+                                       "unknown. \n"])) ;
     print_string  "> ";
     st'
   |_ -> st
@@ -125,6 +125,7 @@ let rec make_move brd st print_prompt: unit =
     let st' brd st  = handle_pick_die brd st (bot_die brd st) in
     (* let st_new_die = handle_roll brd st' in
        let st_same_die = handle_roll brd st in *)
+    print_endline "bot picked die";
     if (bot_die brd st = curr_die st) 
     then make_move brd (handle_roll brd st) true 
     else make_move brd (handle_roll brd (st' brd st)) true);
@@ -196,8 +197,9 @@ let play_game (f : string) : unit =
     ANSITerminal.(print_string [yellow] ("Loading "^f^"...\n"));
     let j = Yojson.Basic.from_file f in
     ANSITerminal.(print_string [green] ("Successully loaded "^f^"!\n\n"));
-    print_endline "Please enter the name of the game file you want to load.\n";
-    print_string  "> ";
+    ANSITerminal.(print_string [red] (String.concat "" ["The total number of ";
+                                                        "players and bots must";
+                                                        " be 5.\n"]));
     let board = Board.from_json j in
     let nplayers = 
       print_endline "Please enter the number of players";
@@ -207,14 +209,19 @@ let play_game (f : string) : unit =
       print_endline "Please enter the number of bots";
       print_string  "> ";
       int_of_string (read_line ()) in  
-    let st = State.init_state board nplayers bot_num  in
-    (* let rec print_list lst = match lst with
-       | [] -> ()
-       | e::l -> print_string (string_of_bool e ); print_string " " ; print_list l in 
-       print_list (check_bot st); *)
-    print_introduction board f nplayers;
-    draw_game_init board st;
-    make_move board st true
+    if (nplayers <= 0 || nplayers + bot_num <= 0 || nplayers + bot_num > 5) then 
+      begin ANSITerminal.(print_string [red] "\nIllegal number of players!");
+        failwith "Error" end
+    else begin
+      let st = State.init_state board nplayers bot_num  in
+      (* let rec print_list lst = match lst with
+         | [] -> ()
+         | e::l -> print_string (string_of_bool e ); print_string " " ; print_list l in 
+         print_list (check_bot st); *)
+      print_introduction board f nplayers;
+      draw_game_init board st;
+      make_move board st true
+    end
   with e -> 
   match e with
   | Type_error (s, _) ->

@@ -13,14 +13,14 @@ type t = {
   prev_players_position: int option; 
 }
 
-let rec botlst nbots nplayers = 
+let bot_lst_init nbots nplayers = 
   let playerlst = List.init nplayers (fun x -> false) in 
   let botlst = List.init nbots (fun x -> true) in 
   List.append playerlst botlst
 
 let init_state board nplayers nbots =
   {
-    bot= botlst nbots nplayers;
+    bot= bot_lst_init nbots nplayers;
     won = false;
     num_players = nplayers+nbots;
     current_player = 0;
