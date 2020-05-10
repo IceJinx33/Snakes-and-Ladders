@@ -1,7 +1,7 @@
 # Installation Instructions
 
-Make sure you have ocaml, opam and pkg-config installed using a package manager 
-like Homebrew before running the following:
+Make sure you have ocaml, opam, ocamlfind and pkg-config installed using a 
+package manager like Homebrew before running the following:
 
 To install the dependencies you can run
 

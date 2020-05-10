@@ -7,4 +7,5 @@
 #load "command.cmo";;
 #load "common.cmo";;
 #load "state.cmo";;
+#load "bot.cmo";;
 #load "gui.cmo";;

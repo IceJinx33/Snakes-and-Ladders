@@ -54,16 +54,6 @@ let prev_player_pos st =
   match st.prev_player_pos with
   | Some x -> string_of_int x
   | _ -> "None"
-(* 
-let set_bot st : st = 
-  {
-    st with 
-    current_player = next_player;
-    player_positions = positions';
-    last_roll = Some roll_val;
-    won = (tile_landed = Board.get_size brd -1);
-    prev_players_position = Some tile_landed;
-  } *)
 
 let curr_pos st = List.nth st.player_positions st.current_player
 
@@ -155,15 +145,18 @@ let roll brd st : result =
   let roll_val = Board.dice_roll brd die_to_roll in
   let roll_landed = curr_pos + roll_val in
   if roll_landed < 0 || roll_landed >= (Board.get_size brd) then
-    invalid_roll st next_player roll_val curr_pos else 
+    invalid_roll st next_player roll_val curr_pos 
+  else 
     let tile_landed = Board.additional_move brd roll_landed in 
     let positions' = swap_elem st.current_player tile_landed st.player_positions
     in let new_die = Board.get_die_at_tile brd tile_landed in
     if (tile_landed = roll_landed) then
       new_die_helper new_die st brd next_player positions' roll_val tile_landed 
-    else if tile_landed > roll_landed then 
-      ladder_m st brd next_player positions' roll_val tile_landed
-    else snake_m st brd next_player positions' roll_val tile_landed 
+    else begin
+      if tile_landed > roll_landed then 
+        ladder_m st brd next_player positions' roll_val tile_landed
+      else snake_m st brd next_player positions' roll_val tile_landed 
+    end
 
 let use_die st d_id : result = 
   let player_diceids = List.nth st.dice st.current_player in
@@ -175,22 +168,3 @@ let use_die st d_id : result =
                   selected_die = selected_die'; 
                 }
   else Invalid_Die st  
-
-(* let rolled_tile_result_str st = 
-   let player_that_just_rolled st= 
-    let current_reduced = (st.current_player - 1 ) mod st.num_players in
-    if current_reduced <= 0 then st.num_players else current_reduced
-   in
-   let curr_pos st = List.nth st.player_positions (player_that_just_rolled st) in
-   try string_of_int (curr_pos st) with _ -> "rolled_tile_result error" *)
-
-(** [pp_state st] is the string representation of the state [st]. *)
-let pp_state st = 
-  "{ won : " ^ string_of_bool (st.won) ^ " , no. of players : " ^ 
-  string_of_int (st.num_players) ^ " , current player : " ^ 
-  string_of_int (st.current_player) ^ " , list of dice : " ^ 
-  pp_list_list "" (st.dice) ^ " , selected die : " ^ 
-  (pp_list pp_string st.selected_die) ^ " , player pos : " ^ 
-  (pp_list string_of_int st.player_positions) ^ " , last roll : " ^ 
-  extract_opt (st.last_roll) ^ ", prev player pos : "^
-  (extract_opt st.prev_player_pos)^" }"

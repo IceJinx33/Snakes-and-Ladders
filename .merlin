@@ -1,10 +1,11 @@
 B _build
 PKG oUnit
 PKG yojson
-PKG state
 PKG board
-PKG main
 PKG command
 PKG common
+PKG state
+PKG bot
+PKG main
 PKG ANSITerminal
 PKG Graphics

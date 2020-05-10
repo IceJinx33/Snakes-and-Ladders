@@ -1,4 +1,4 @@
-MODULES=board command common state main gui
+MODULES=board command common state main gui bot
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
@@ -18,12 +18,22 @@ test:
 play:
 	$(OCAMLBUILD) $(MAIN) && ./$(MAIN)
 
-check:
-	bash checkenv.sh && bash checktypes.sh
-
 zip:
 	zip snakes-and-ladders.zip *.ml* *.json _tags Makefile
+
+docs: docs-public docs-private
 	
+docs-public: build
+	mkdir -p doc.public
+	ocamlfind ocamldoc -I _build -package yojson,ANSITerminal \
+		-html -stars -d doc.public $(MLIS)
+
+docs-private: build
+	mkdir -p doc.private
+	ocamlfind ocamldoc -I _build -package yojson,ANSITerminal \
+		-html -stars -d doc.private \
+		-inv-merge-ml-mli -m A $(MLIS) $(MLS)
+
 clean:
 	ocamlbuild -clean
 	rm -rf doc.public doc.private sandn.zip
