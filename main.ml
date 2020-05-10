@@ -199,7 +199,7 @@ let play_game (f : string) : unit =
     ANSITerminal.(print_string [green] ("Successully loaded "^f^"!\n\n"));
     ANSITerminal.(print_string [red] (String.concat "" ["The total number of ";
                                                         "players and bots must";
-                                                        " be 5.\n"]));
+                                                        " not exceed 5.\n"]));
     let board = Board.from_json j in
     let nplayers = 
       print_endline "Please enter the number of players";
