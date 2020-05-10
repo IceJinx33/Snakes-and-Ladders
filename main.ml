@@ -35,7 +35,7 @@ let handle_pick_die brd st dice_id =
     print_string  "> ";
     st'
   | Changed_Die st' -> ANSITerminal.(print_string [green]
-                                       ("New dice chosen. \n"));
+                                       ("\nNew dice chosen. \n"));
     print_string  "> ";
     st'
   | _ -> st
