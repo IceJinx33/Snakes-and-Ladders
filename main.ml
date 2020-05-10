@@ -209,7 +209,8 @@ let play_game (f : string) : unit =
       print_endline "Please enter the number of bots";
       print_string  "> ";
       int_of_string (read_line ()) in  
-    if (nplayers <= 0 || nplayers + bot_num <= 0 || nplayers + bot_num > 5) then 
+    if (nplayers <= 0 || bot_num < 0 || nplayers + bot_num <= 0 || 
+        nplayers + bot_num > 5) then 
       begin ANSITerminal.(print_string [red] "\nIllegal number of players!");
         failwith "Error" end
     else begin
