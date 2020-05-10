@@ -4,15 +4,21 @@ open Common
 open Command
 open Yojson.Basic.Util
 open Gui
+open Bot
+
 
 (*[check_win_cond st] checks if any player has fulfilled the winning condition*)
 let check_win_cond st = 
   if check_won st then
-    let curr_player_str = string_of_int ((State.get_curr_player st)+1) in
+    let curr_player_str = string_of_int ((State.get_curr_player st)) in
     ANSITerminal.(print_string [green] 
                     ("\nCongratulations! " ^curr_player_str^ " won!\n"));
     exit 0;
   else ()
+
+let is_bot st = 
+  List.nth (bot_list st) (State.get_curr_player st)
+
 
 (* [handle_pick_die board st dice_id] takes the parsed command and prints in 
    the terminal if the channge was made or invalid  *)
@@ -22,7 +28,7 @@ let handle_pick_die board st dice_id =
                                        ("That die is unavaiable, try again. \n"));
     print_string  "> ";
     st'
-  | Changed_Die st' -> ANSITerminal.(print_string [green]
+  | Changed_Die st' -> ANSITerminal.(print_string [white]
                                        ("New dice chosen \n"));
     print_string  "> ";
     st'
@@ -55,7 +61,7 @@ let handle_roll board st =
     st'
   | Found_New_Die  st' -> 
     print_roll_res st';
-    ANSITerminal.(print_string [red] ("You found a new die \n")) ;
+    ANSITerminal.(print_string [red] ("A new die was found. \n")) ;
     st'
   | Roll_Not_Valid st' -> 
     print_roll_res st';
@@ -99,16 +105,25 @@ let print_move_prompt brd st =
   print_string  "> ";
   ()
 
+
 (* [make_move st brd] checks winning condition then takes the players terminal 
    command and handles the parsed commands *)
 let rec make_move brd st print_prompt: unit = 
   check_win_cond st;
-  if print_prompt then
-    print_move_prompt brd st;
+  if ( is_bot st )then  (
+    ANSITerminal.(print_string [green] ("\nBot is rolling. \n"));
+    let st' brd st  = handle_pick_die brd st (bot_die brd st) in
+    (* let st_new_die = handle_roll brd st' in
+       let st_same_die = handle_roll brd st in *)
+    if (bot_die brd st = curr_die st) 
+    then make_move brd (handle_roll brd st) true 
+    else make_move brd (handle_roll brd (st' brd st)) true);
 
+  if print_prompt then 
+    print_move_prompt brd st;
   match read_line () with
   | exception End_of_file -> ()
-  | input -> 
+  | input ->
     begin
       match Command.parse input with
       | Quit ->  exit 0
@@ -172,12 +187,19 @@ let play_game (f:string): unit =
     print_endline "Please enter the name of the game file you want to load.\n";
     print_string  "> ";
     let board = Board.from_json j in
-    let read_ints () = 
+    let nplayers = 
       print_endline "Please enter the number of players";
       print_string  "> ";
       int_of_string (read_line ()) in 
-    let nplayers : int  = read_ints ()in
-    let st = State.init_state board nplayers  in
+    let bot_num  = 
+      print_endline "Please enter the number of bots";
+      print_string  "> ";
+      int_of_string (read_line ()) in  
+    let st = State.init_state board nplayers bot_num  in
+    (* let rec print_list lst = match lst with
+       | [] -> ()
+       | e::l -> print_string (string_of_bool e ); print_string " " ; print_list l in 
+       print_list (check_bot st); *)
     print_introduction board f nplayers;
     make_move board st true
   with e -> 

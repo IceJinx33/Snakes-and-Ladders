@@ -23,7 +23,7 @@ let parse str : command =
   | [] -> raise Empty
   | [cmd] -> 
     begin
-    match cmd with
+      match cmd with
       |"quit" -> Quit
       |"roll" -> Roll
       |"show" -> Show_Dice
@@ -31,9 +31,9 @@ let parse str : command =
     end
   | cmd::die_phrase -> 
     begin
-    match cmd with
+      match cmd with
       |"use" -> 
-      if List.length die_phrase = 1 then  
-      Pick_Die (List.hd die_phrase) else raise Malformed
+        if List.length die_phrase = 1 then  
+          Pick_Die (List.hd die_phrase) else raise Malformed
       |_-> raise Malformed
     end

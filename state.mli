@@ -24,7 +24,7 @@ type result =
 
 (** [init_state brd ] takes in the board [brd] and creates the game's 
     starting state. *)
-val init_state : Board.t -> int -> t
+val init_state : Board.t -> int -> int -> t
 
 (** [roll brd st] updates the state [st] after each player roll and 
     checks for [Normal_Roll] [Slid_Down_Snake] [Went_Up_Ladder] [Found_New_Die]. 
@@ -39,7 +39,7 @@ val use_die: t -> Board.dice_id -> result
 (** [check_won st] checks if any player has reached the winning tile. *)
 val check_won: t -> bool 
 
-val check_bot: t -> bool list
+val bot_list: t -> bool list
 
 (** [n_players st] is the number of players in the game state [st]. *)
 val n_players: t -> int
