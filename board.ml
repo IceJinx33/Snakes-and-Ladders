@@ -117,7 +117,8 @@ let dice_ids brd =
 let find_locate brd d = 
   match List.find (fun di -> di.d_id = d) brd.dice with
   | exception Not_found -> raise (UnknownDie d)
-  | di_req -> di_req.d_loc
+  | die -> let l = die.d_loc in if (l >= brd.board_size || l < 0) then 
+      raise (TileOutOfRange l) else l
 
 let start_die brd = 
   brd.start_die.d_id

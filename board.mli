@@ -50,14 +50,16 @@ val dice_ids : t -> dice_id list
 (** [find_locate brd d] is the identifier of the current tile location of the 
     dice with indentifier [d] in [brd]. 
     Requires: [brd] is a a record representing a valid game board.
-    Raises: [UnknownDice d] if [d] is not the identifier of a die in [brd]. *)
+    Raises: [UnknownDie d] if [d] is not the identifier of a die in [brd]. 
+    Raises: [TileOutOfRange pos] if [pos] is the result of 
+    [find_locate brd d] and it is an invalid tile identifier in [brd]. *)
 val find_locate : t -> dice_id -> tile_id
 
 (** [additional_move brd pos] is the resulting position of interacting with
     either a ladder or a snake at tile pos if either of them exists. 
     Requires: [pos] is a tile within {0 ... n-1}
     Raises: [TileOutOfRange pos] if [pos] is out of the range of tiles on
-    the board*)
+    the board. *)
 val additional_move: t -> tile_id -> tile_id
 
 (** [dice_roll brd d_id] is the result of rolling die with identifier 
@@ -71,13 +73,17 @@ val start_die : t -> dice_id
 
 (** [get_faces brd d_id] is the list of faces representing the sides of the die
     [d_id] on board [brd].
-    Requires: [brd] is a a record representing a valid game board. *)
+    Requires: [brd] is a a record representing a valid game board. 
+    Raises: [UnknownDie d_id] if [d_id] is not an identifier of a die 
+    in [brd]. *)
 val get_faces : t -> dice_id -> face list
 
 (** [get_probs brd d_id] is the list of probabilities correspond to the sides 
     of the die in the order that get_faces specifies for die [d_id] on board 
     [brd].
-    Requires: [brd] is a a record representing a valid game board. *)
+    Requires: [brd] is a a record representing a valid game board. 
+    Raises: [UnknownDie d_id] if [d_id] is not an identifier of a die 
+    in [brd]. *)
 val get_probs : t -> dice_id -> prob list
 
 (** [get_size brd] is the number of tiles on the board brd]. 

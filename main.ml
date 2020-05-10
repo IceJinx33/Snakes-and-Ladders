@@ -14,16 +14,15 @@ let check_win_cond brd st =
     let message = "Congratulations! " ^curr_player_str^ " won!" in
     draw_game brd st;
     draw_win message brd;
-    ANSITerminal.(print_string [green] 
-                    ("\n"^message^"\n"));
+    ANSITerminal.(print_string [green] ("\n"^message^"\n"));
     exit 0;
   else ()
 
 let is_bot st = 
   List.nth (bot_list st) (State.get_curr_player st)
 
-(* [handle_pick_die board st dice_id] takes the parsed command and prints in 
-   the terminal if the channge was made or invalid  *)
+(** [handle_pick_die board st dice_id] takes the parsed command and prints in 
+    the terminal if the channge was made or invalid.  *)
 let handle_pick_die brd st dice_id = 
   draw_game brd st;
   match State.use_die st dice_id  with 
@@ -50,7 +49,7 @@ let handle_roll brd st =
     let roll_val = State.last_roll st in
     ANSITerminal.(print_string [white] ("\nYou rolled a "^roll_val^".\n"));
   in
-  let new_tile st= State.prev_players_position st in 
+  let new_tile st= State.prev_player_pos st in 
   match roll_res with 
   | Normal_Roll st' -> 
     print_roll_res st';
@@ -114,9 +113,8 @@ let print_move_prompt brd st =
   print_string  "> ";
   ()
 
-
-(* [make_move st brd] checks winning condition then takes the players terminal 
-   command and handles the parsed commands *)
+(** [make_move st brd] checks winning condition then takes the players terminal 
+    command and handles the parsed commands. *)
 let rec make_move brd st print_prompt: unit = 
   draw_game brd st;
   check_win_cond brd st;
@@ -219,7 +217,7 @@ let play_game (f : string) : unit =
          | [] -> ()
          | e::l -> print_string (string_of_bool e ); print_string " " ; print_list l in 
          print_list (check_bot st); *)
-      print_introduction board f nplayers;
+      print_introduction board f (nplayers+bot_num);
       draw_game_init board st;
       make_move board st true
     end

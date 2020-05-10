@@ -22,8 +22,8 @@ type result =
   | Roll_Not_Valid of t
   | Invalid_Die of t
 
-(** [init_state brd ] takes in the board [brd] and creates the game's 
-    starting state. *)
+(** [init_state brd np nb] takes in the board [brd] and creates the game's 
+    starting state with [np] number of players and [nb] number of bots. *)
 val init_state : Board.t -> int -> int -> t
 
 (** [roll brd st] updates the state [st] after each player roll and 
@@ -39,6 +39,9 @@ val use_die: t -> Board.dice_id -> result
 (** [check_won st] checks if any player has reached the winning tile. *)
 val check_won: t -> bool 
 
+(** [bot_list st] is a list of bools where each element corresponds to whether
+    a player with that index is a bot or not. An element of bot_list will be true 
+    if the player with that index is a bot and is false otherwise. *)
 val bot_list: t -> bool list
 
 (** [n_players st] is the number of players in the game state [st]. *)
@@ -66,10 +69,10 @@ val curr_pos: t -> Board.tile_id
 (** [curr_dice st] returns the list of dice for the current player in [st]. *)
 val curr_dice: t -> Board.dice_id list
 
-(** [curr_dice st] returns the list of dice for the current player in [st]. *)
+(** [curr_die st] returns the selected die for the current player in [st]. *)
 val curr_die: t -> Board.dice_id
 
-(** [prev_players_position st] returns the positions of the players in the state 
-    before [st] *)
-val prev_players_position: t -> string
+(** [prev_player_position st] returns the previous position of the current 
+    player in state [st]. *)
+val prev_player_pos: t -> string
 

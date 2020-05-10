@@ -68,5 +68,13 @@ let extract_opt_str x =
   | None -> "None"
   | Some v -> "Some "^v
 
+(** [pp_list_list ] concatanates elements of a list with spaces after each 
+    element. *) 
+let rec pp_list_list acc lst = 
+  match lst with 
+  | [] -> acc 
+  | [h] -> acc^" "^(pp_list pp_string h)
+  | h1::(h2::t as t') -> pp_list_list (acc^" "^(pp_list pp_string h1)) t'
+
 
 
