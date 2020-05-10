@@ -13,24 +13,26 @@ type t = {
   prev_players_position: int option; 
 }
 
-(* let botlst bot nplayers = 
-   for 1 to nplayers do false :: bot uhh then set the state to this  *)
+let rec botlst nbots nplayers = 
+  let playerlst = List.init nplayers (fun x -> false) in 
+  let botlst = List.init nbots (fun x -> true) in 
+  List.append playerlst botlst
 
-let init_state board nplayers =
+let init_state board nplayers nbots =
   {
-    bot= [true];
+    bot= botlst nbots nplayers;
     won = false;
-    num_players = nplayers;
+    num_players = nplayers+nbots;
     current_player = 0;
-    dice = List.init nplayers (fun x-> [Board.start_die board]);
-    selected_die = List.init nplayers (fun x-> Board.start_die board);
-    player_positions = List.init nplayers (fun x -> 0);
+    dice = List.init (nplayers+nbots) (fun x-> [Board.start_die board]);
+    selected_die = List.init (nplayers+nbots)(fun x-> Board.start_die board);
+    player_positions = List.init (nplayers+nbots) (fun x -> 0);
     last_roll = None;
     prev_players_position = None;
   }
 let check_won st = st.won
 
-let check_bot st = st.bot
+let bot_list st = st.bot 
 
 let n_players st = st.num_players
 
@@ -102,7 +104,7 @@ let roll brd st : result =
     } 
   else 
     let tile_landed = Board.additional_move brd roll_landed in 
-    let () = print_int tile_landed in
+    (* let () = print_int tile_landed in *)
     let positions' = swap_elem st.current_player tile_landed st.player_positions in
     let new_die = Board.get_die_at_tile brd tile_landed in
     if (tile_landed = roll_landed) then

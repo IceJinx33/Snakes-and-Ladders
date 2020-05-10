@@ -1,15 +1,15 @@
 {
-  "tiles": 100,
+  "tiles": 64,
   "dice": [
     {
       "die id": "1",
       "faces": [
-        1,
-        8,
         2,
-        5,
-        7,
-        99
+        2,
+        2,
+        2,
+        2,
+        2
       ],
       "probs": [
         0.18,
@@ -22,89 +22,139 @@
       "die location": 0
     },
     {
+      "die id": "6",
+      "faces": [
+        1,
+        12,
+        1,
+        3,
+        1,
+        3
+      ],
+      "probs": [
+        0.01,
+        0.90,
+        0.01,
+        0.01,
+        0.01,
+        0.06
+      ],
+      "die location": 6
+    },
+    {
       "die id": "2",
       "faces": [
         1,
-        2,
+        10,
+        1,
         3,
-        4,
-        5,
-        6
+        1,
+        0
       ],
       "probs": [
-        0.23,
-        0.17,
-        0.17,
-        0.16,
-        0.16,
-        0.11
+        0.01,
+        0.90,
+        0.01,
+        0.01,
+        0.01,
+        0.06
       ],
-      "die location": 9
+      "die location": 2
+    },
+    {
+      "die id": "1",
+      "faces": [
+        0,
+        3,
+        1,
+        3,
+        1,
+        3
+      ],
+      "probs": [
+        0.90,
+        0.01,
+        0.01,
+        0.01,
+        0.01,
+        0.06
+      ],
+      "die location": 1
+    },
+    {
+      "die id": "3",
+      "faces": [
+        0,
+        3,
+        1,
+        3,
+        1,
+        3
+      ],
+      "probs": [
+        0.90,
+        0.01,
+        0.01,
+        0.01,
+        0.01,
+        0.06
+      ],
+      "die location": 3
+    },
+    {
+      "die id": "5",
+      "faces": [
+        1,
+        0,
+        1,
+        3,
+        1,
+        3
+      ],
+      "probs": [
+        0.01,
+        0.90,
+        0.01,
+        0.01,
+        0.01,
+        0.06
+      ],
+      "die location": 5
+    },
+    {
+      "die id": "4",
+      "faces": [
+        1,
+        9,
+        1,
+        3,
+        1,
+        3
+      ],
+      "probs": [
+        0.01,
+        0.90,
+        0.01,
+        0.01,
+        0.01,
+        0.06
+      ],
+      "die location": 4
     }
   ],
   "start die": "1",
   "snakes": [
     {
       "snake id": "1",
-      "head": 44,
-      "tail": 5
-    },
-    {
-      "snake id": "2",
-      "head": 48,
-      "tail": 9
-    },
-    {
-      "snake id": "3",
-      "head": 71,
-      "tail": 12
-    },
-    {
-      "snake id": "4",
-      "head": 87,
-      "tail": 23
-    },
-    {
-      "snake id": "5",
-      "head": 92,
-      "tail": 64
-    },
-    {
-      "snake id": "6",
-      "head": 40,
-      "tail": 13
+      "head": 12,
+      "tail": 2
     }
   ],
   "ladders": [
     {
       "ladder id": "1",
-      "top": 37,
-      "bottom": 0
-    },
-    {
-      "ladder id": "2",
-      "top": 16,
-      "bottom": 3
-    },
-    {
-      "ladder id": "3",
-      "top": 29,
-      "bottom": 7
-    },
-    {
-      "ladder id": "4",
-      "top": 41,
-      "bottom": 20
-    },
-    {
-      "ladder id": "5",
-      "top": 98,
-      "bottom": 79
-    },
-    {
-      "ladder id": "6",
-      "top": 91,
-      "bottom": 80
+      "top": 15,
+      "bottom": 1
     }
   ]
 }
