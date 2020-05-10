@@ -17,7 +17,7 @@ val draw_game : Board.t -> State.t -> unit
 val draw_game_init : Board.t -> State.t -> unit 
 
 (** [draw_win message brd] draws a win message [message] on the Ocaml 
-    Graphic window. 
+    Graphics window. 
     Requires: There must be an existing Ocaml Graphics window open and 
     [brd] is a valid representation of a game board. *)
 val draw_win : string -> Board.t -> unit
