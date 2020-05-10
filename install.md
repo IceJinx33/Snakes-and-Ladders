@@ -1,6 +1,7 @@
 # Installation Instructions
 
-Make sure you have opam installed before running the following:
+Make sure you have ocaml, opam and pkg-config installed using a package manager 
+like Homebrew before running the following:
 
 To install the dependencies you can run
 
@@ -21,5 +22,5 @@ to, run
 
   **echo $DISPLAY** 
 
-For Mac users, we recommend installing XQuartz and playing the game from the 
-xterm terminal. 
+For Mac users, we recommend installing XQuartz from https://www.xquartz.org 
+and playing the game from the xterm terminal. 

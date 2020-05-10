@@ -24,7 +24,7 @@ exception TileOutOfRange of tile_id
       face of the die is rolled. 
       Requires: The sum of all the probabilities in this
       list must be 1. 
-      [d_loc] is the location of the dice. *)
+    [d_loc] is the location of the dice. *)
 type die = {
   d_id: dice_id;
   faces: face list;
@@ -33,10 +33,10 @@ type die = {
 }
 
 (** A snake on the board. If a player lands on a tile with [id] = 
-    [head] then the player is moved to a tile with [id] = [tail]. *)
-(** [s_id] is the identifier of the snake. *)
-(** [head] is the head of the snake. *)
-(** [tail] is the tail of the snake. *)
+    [head] then the player is moved to a tile with [id] = [tail]. 
+    [s_id] is the identifier of the snake.
+    [head] is the head of the snake.
+    [tail] is the tail of the snake. *)
 type snake = {
   s_id: snake_id;
   head: tile_id;
@@ -47,7 +47,7 @@ type snake = {
     [bottom] then the player is moved to a tile with [id] = [top].
     [l_id] is the identifier of the ladder
     [top] is the top of the ladder.
-    [bottom] is the bottom of the ladder.*)
+    [bottom] is the bottom of the ladder. *)
 type ladder = {
   l_id: ladder_id;
   top: tile_id;
@@ -133,7 +133,8 @@ let additional_move brd pos =
     | _,[l] -> l.top
     | _ -> pos
 
-(** [get_die] checks list of dice and returns die given the die_id. *)
+(** [get_die] checks the list of dice in [brd] and returns die given 
+    the die_id. *)
 let get_die brd d_id = 
   let rec get_die_helper d_lst d_id = 
     match d_lst with
@@ -155,8 +156,6 @@ let dice_roll brd d_id =
   let tgt = Random.float 1.0 in
   rollhelper 0 tgt 0.0 (List.nth die.probs 0) die.faces die.probs
 
-
-
 let get_size brd = brd.board_size
 
 let get_die_at_tile brd pos = 
@@ -166,11 +165,11 @@ let get_die_at_tile brd pos =
   | [] -> None
   | _ -> failwith "Multiple Dice occupying one tile!"
 
-let get_faces brd d_id=
+let get_faces brd d_id =
   let d = get_die brd d_id in
   d.faces
 
-let get_probs brd d_id=
+let get_probs brd d_id =
   let d = get_die brd d_id in
   d.probs
 

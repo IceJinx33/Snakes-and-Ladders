@@ -69,5 +69,7 @@ val curr_dice: t -> Board.dice_id list
 (** [curr_dice st] returns the list of dice for the current player in [st]. *)
 val curr_die: t -> Board.dice_id
 
+(** [prev_players_position st] returns the positions of the players in the state 
+    before [st] *)
 val prev_players_position: t -> string
 

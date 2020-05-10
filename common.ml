@@ -1,23 +1,22 @@
 (********************************************************************
-  Holds commonly used functions
+   Holds commonly used functions
  ********************************************************************)
 
-
 (* [select_elem] takes and index and a list and returnns the element at that 
-index *)
+   index *)
 let rec select_elem x lst = 
   match lst with
   | hd::tl -> if x = 0 then hd else select_elem (x-1) tl
   | _ -> failwith "index out of bounds"
 
 (* [swap_elem] takes an index and element and a list, then swaps out the 
-element at the given index  *)
+   element at the given index  *)
 let swap_elem ind elm lst = 
   let rec swap_helper (ind:int) (elm:'a) (acc:'a list) (lst:'a list) =
     match lst with
     | [] -> failwith "index out of bounds"
     | hd::tl -> if ind = 0 then List.concat [List.rev (elm::acc);tl]
-    else swap_helper (ind-1) elm (hd::acc) tl
+      else swap_helper (ind-1) elm (hd::acc) tl
   in
   swap_helper ind elm [] lst
 
@@ -38,10 +37,10 @@ let cmp_set_like_lists lst1 lst2 =
 (** [pp_string s] pretty-prints string [s]. *)
 let pp_string s = s
 
-(** [pp_string s] pretty-prints int [i]. *)
+(** [pp_int i] pretty-prints int [i]. *)
 let pp_int i = string_of_int i
 
-(** [pp_string s] pretty-prints float [f]. *)
+(** [pp_float f] pretty-prints float [f]. *)
 let pp_float f = string_of_float f
 
 (** [pp_list pp_elt lst] pretty-prints list [lst], using [pp_elt]
@@ -57,14 +56,14 @@ let pp_list pp_elt lst =
     in loop 0 "" lst
   in "[" ^ pp_elts lst ^ "]"
 
-(** [extract_opt] is the string representation of an integer option. *)
-  let extract_opt x = 
+(** [extract_opt x] is the string representation of an integer option. *)
+let extract_opt x = 
   match x with 
   | None -> "None"
   | Some v -> "Some "^(string_of_int v)
 
-(** [extract_opt] is the string representation of an string option. *)
-  let extract_opt_str x = 
+(** [extract_opt_str] is the string representation of an string option. *)
+let extract_opt_str x = 
   match x with 
   | None -> "None"
   | Some v -> "Some "^v

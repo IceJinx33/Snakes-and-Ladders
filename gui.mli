@@ -5,10 +5,15 @@
    graphical interface for the board game.
  ********************************************************************)
 
-(** [draw_board brd t_size x y] draws the board [brd] on an Ocaml Graphics 
-    window with tiles having side of length [t_size] pixels. The lower 
-    left-most corner of the board has x-coordinates [x] pixels and 
-    y-coordinates [y] pixels with respect to the origin of the Graphics window.
-    Requires: The number of tiles in [brd] must be a positive square number. 
-*)
-val draw_board : Board.t -> int -> int -> int -> unit 
+(** [draw_game brd st] draws the game board [brd] and the current positions of 
+    the players in state [st] of the game. *)
+val draw_game : Board.t -> State.t -> unit 
+
+(** [draw_game_init brd st] draws the game board [brd] and the initial
+    positions of the players in the initial state [st] of the game. *)
+val draw_game_init : Board.t -> State.t -> unit 
+
+(** [draw_win message brd] draws a win message [message] on the Ocaml 
+    Graphic window. 
+    Requires: There must be an existing Ocaml Graphics window open. *)
+val draw_win : string -> Board.t -> unit

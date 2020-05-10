@@ -5,37 +5,46 @@ open Command
 open Yojson.Basic.Util
 open Gui
 
-(*[check_win_cond st] checks if any player has fulfilled the winning condition*)
-let check_win_cond st = 
+(** [check_win_cond brd st] checks if any player has fulfilled the winning 
+    condition. *)
+let check_win_cond brd st = 
   if check_won st then
-    let curr_player_str = string_of_int ((State.get_curr_player st)+1) in
+    let curr_player_str = string_of_int ((State.get_curr_player st)) in
+    let message = "Congratulations! " ^curr_player_str^ " won!" in
+    draw_game brd st;
+    draw_win message brd;
     ANSITerminal.(print_string [green] 
-                    ("\nCongratulations! " ^curr_player_str^ " won!\n"));
+                    ("\n"^message^"\n"));
     exit 0;
   else ()
 
-(* [handle_pick_die board st dice_id] takes the parsed command and prints in 
-   the terminal if the channge was made or invalid  *)
-let handle_pick_die board st dice_id = 
+(** [handle_pick_die brd st dice_id] takes the parsed command and prints in 
+    the terminal if the channge was made or invalid. *)
+let handle_pick_die brd st dice_id = 
+  draw_game brd st;
   match State.use_die st dice_id  with 
-  | Invalid_Die st' -> ANSITerminal.(print_string [red]
-                                       ("That die is unavaiable, try again. \n"));
+  | Invalid_Die st' -> ANSITerminal.(print_string [red] (String.concat ""
+                                                           ["That die is ";
+                                                            "unavailable, ";
+                                                            "try again.";
+                                                            "\n"]));
     print_string  "> ";
     st'
   | Changed_Die st' -> ANSITerminal.(print_string [green]
-                                       ("New dice chosen \n"));
+                                       ("New dice chosen. \n"));
     print_string  "> ";
     st'
   | _ -> st
 
-(* [handle_roll board st] takes the parsed command and calls the state to update
-   according to what the rolled tile contains (ie. snake, ladder, die, nothing) *)
-let handle_roll board st = 
-
-  let roll_res = State.roll board st in
+(** [handle_roll brd st] takes the parsed command and calls the state to update
+    according to what the rolled tile contains (ie. snake, ladder, die, 
+    nothing). *)
+let handle_roll brd st = 
+  draw_game brd st;
+  let roll_res = State.roll brd st in
   let print_roll_res st = 
     let roll_val = State.last_roll st in
-    ANSITerminal.(print_string [white] ("\nYou rolled a "^roll_val^"\n"));
+    ANSITerminal.(print_string [white] ("\nYou rolled a "^roll_val^".\n"));
   in
   let new_tile st= State.prev_players_position st in 
   match roll_res with 
@@ -44,31 +53,32 @@ let handle_roll board st =
     st'
   | Slid_Down_Snake st' -> 
     print_roll_res st';
-    ANSITerminal.(print_string [red] 
-                    ("You've slide down a snake to "^
-                     new_tile st'^"\n")) ; st'
+    ANSITerminal.(print_string [red] ("You've slide down a snake to "^
+                                      new_tile st'^".\n")) ; st'
   | Went_Up_Ladder st' -> 
     print_roll_res st';
-    ANSITerminal.(print_string [blue] 
-                    ("You've gone up a ladder to "^ 
-                     new_tile st'^"\n")) ;
+    ANSITerminal.(print_string [blue] ("You've gone up a ladder to "^ 
+                                       new_tile st'^".\n")) ;
     st'
   | Found_New_Die  st' -> 
     print_roll_res st';
-    ANSITerminal.(print_string [red] ("You found a new die \n")) ;
+    ANSITerminal.(print_string [red] ("You found a new die. \n")) ;
     st'
   | Roll_Not_Valid st' -> 
     print_roll_res st';
     ANSITerminal.(print_string [red]
-                    ("\n That roll is not valid, your roll must be the exact spaces until the 
-     end \n")) ;
+                    (String.concat "" ["\n"; "That roll is not valid,";
+                                       "you will exceed the number of tiles ";
+                                       "on the board and go into the ";
+                                       "unknown \n"])) ;
     print_string  "> ";
     st'
   |_ -> st
 
-(* [handle_show_dice brd st] prints out the list of the currentplayers avalaible
-   dice*)
+(** [handle_show_dice brd st] prints out the list of the current player's       
+    available dice. *)
 let handle_show_dice brd st = 
+  draw_game brd st;
   let dice = State.curr_dice st in
   (* Print here *)
   ANSITerminal.(
@@ -78,9 +88,10 @@ let handle_show_dice brd st =
   (* Return same state *)
   st
 
-(* [print_move_pompt brd st] prints out the current tile location and the 
-   faces of the selected die to the current player  *)
+(** [print_move_pompt brd st] prints out the current tile location and the 
+    faces of the selected die to the current player. *)
 let print_move_prompt brd st = 
+  draw_game brd st;
   let curr_player_str = string_of_int ((State.get_curr_player st)+1) in
   let curr_pos_str = string_of_int (State.curr_pos st) in 
   let curr_die_did = State.curr_die st in 
@@ -99,10 +110,11 @@ let print_move_prompt brd st =
   print_string  "> ";
   ()
 
-(* [make_move st brd] checks winning condition then takes the players terminal 
-   command and handles the parsed commands *)
-let rec make_move brd st print_prompt: unit = 
-  check_win_cond st;
+(** [make_move st brd] checks winning condition then takes the player's terminal 
+    input command and handles the parsed commands. *)
+let rec make_move brd st print_prompt : unit = 
+  draw_game brd st;
+  check_win_cond brd st;
   if print_prompt then
     print_move_prompt brd st;
 
@@ -131,8 +143,8 @@ let rec make_move brd st print_prompt: unit =
         make_move brd st false 
     end
 
-(* [print_introduction brd fname nplayers] prints the game introduction into
-   the terminal *)
+(** [print_introduction brd fname nplayers] prints the game introduction into
+    the terminal. *)
 let print_introduction brd fname nplayers : unit = 
   let nplayers_str = string_of_int nplayers in
   let nsquares_str = string_of_int (Board.get_size brd - 1) in
@@ -140,28 +152,30 @@ let print_introduction brd fname nplayers : unit =
   let start_faces = get_faces brd start_did in
   let start_probs = get_probs brd start_did in
   ANSITerminal.(
-    print_string [yellow] ("Your flight to Brazil has taken an "^
-                           "unfortunate turn.\nYou crash landed in the amazon at square 0 and must "^
-                           "progress "^nsquares_str^" squares \nto make it to rescue convoy that is "^
-                           "about to depart!\n");
+    print_string [yellow] 
+      (String.concat "" ["Your flight to Brazil has taken an unfortunate turn.";
+                         "\nYou crash landed in the amazon at square 0 and ";
+                         "must progress "^nsquares_str^" squares \nto make ";
+                         "it to rescue convoy that is "^
+                         "about to depart!\n"]);
     print_string [blue] ("You and your fellow passengers, "^nplayers_str^
                          " of you in total - find a pouch of dice\n"^
-                         "entitled: "^start_did^" that all have the same properties:\n");
+                         "entitled: "^start_did^" that all have the"^ 
+                         " same properties:\n");
     print_string [yellow] ("It has faces:\n");
     print_string [green] (pp_list pp_int start_faces ^"\n");
     print_string [yellow] ("Each respectively with probabilities:\n");
     print_string [green] (pp_list pp_float start_probs ^"\n");
-    print_string [red] ("Alongside the dice is a list of incantations you can "^
-                        "say to bid you success in your journey:\n"^
-                        "   ○ \"roll\"\n"^
-                        "   ○ \"use [id]\"\n"^
-                        "   ○ \"quit\"\n"^
-                        "   ○ \"show\"\n");
+    print_string [red] ("Alongside the dice is a list of incantations you can"^
+                        " say to bid you success"^"\nin your journey:\n"^
+                        "   * \"roll\"\n"^
+                        "   * \"use [id]\"\n"^
+                        "   * \"quit\"\n"^
+                        "   * \"show\"\n");
   )
 
-
 (** [play_game f] starts the adventure in file [f]. *)
-let play_game (f:string): unit =
+let play_game (f : string) : unit =
   (* Try wrap this, file may not exist *)
   (* Take the name of the json *)
   (* import it based off the file path *)
@@ -179,6 +193,7 @@ let play_game (f:string): unit =
     let nplayers : int  = read_ints ()in
     let st = State.init_state board nplayers  in
     print_introduction board f nplayers;
+    draw_game_init board st;
     make_move board st true
   with e -> 
   match e with
@@ -186,9 +201,9 @@ let play_game (f:string): unit =
     ANSITerminal.(print_string [red] (
         "\n\ Uh oh, "^f^" is in uncharted territory.\n\ 
         Let's not try to venture into "^f^" next time. \n\n"));
-  | _ -> ANSITerminal.(print_string [red] 
-                         ("\n\ Some error occured and you should probably panic. \n\n" ))
-
+  | _ -> ANSITerminal.(print_string [red] (String.concat "" 
+                                             ["\n\ Some error occured and you";
+                                              " should probably panic. \n\n"] ))
 
 (** [main ()] prompts for the game to play, then starts it. *)
 let main () =

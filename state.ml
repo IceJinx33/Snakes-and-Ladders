@@ -78,8 +78,8 @@ type result =
   | Roll_Not_Valid of t
   | Invalid_Die of t
 
-(* [pp_list_list ] concatannates elements of a list with spaces after each 
-   element*) 
+(** [pp_list_list ] concatannates elements of a list with spaces after each 
+    element. *) 
 let rec pp_list_list lst acc = 
   match lst with 
   | [] -> acc 
@@ -99,7 +99,6 @@ let roll brd st : result =
       current_player = next_player;
       last_roll = Some roll_val;
       prev_players_position = Some curr_pos;
-
     } 
   else 
     let tile_landed = Board.additional_move brd roll_landed in 
