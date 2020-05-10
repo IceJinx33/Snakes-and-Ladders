@@ -11,7 +11,7 @@ open Bot
 let check_win_cond brd st = 
   if check_won st then
     let curr_player_str = string_of_int ((State.get_curr_player st)) in
-    let message = "Congratulations! " ^curr_player_str^ " won!" in
+    let message = "Congratulations! p" ^curr_player_str^ " won!" in
     draw_game brd st;
     draw_win message brd;
     ANSITerminal.(print_string [green] 
@@ -120,12 +120,14 @@ let print_move_prompt brd st =
 let rec make_move brd st print_prompt: unit = 
   draw_game brd st;
   check_win_cond brd st;
-  if ( is_bot st )then  (
-    ANSITerminal.(print_string [green] ("\nBot is rolling. \n"));
+  if ( is_bot st )then  (  
+        let curr_player_str = string_of_int ((State.get_curr_player st)+1) in
+     let curr_pos_str = string_of_int (State.curr_pos st) in 
+    ANSITerminal.(print_string [green] ("\nBot "^curr_player_str^" is rolling. \n"));
+    ANSITerminal.(print_string [white] ("It is currently on tile "^curr_pos_str^"."));
     let st' brd st  = handle_pick_die brd st (bot_die brd st) in
     (* let st_new_die = handle_roll brd st' in
        let st_same_die = handle_roll brd st in *)
-    print_endline "bot picked die";
     if (bot_die brd st = curr_die st) 
     then make_move brd (handle_roll brd st) true 
     else make_move brd (handle_roll brd (st' brd st)) true);

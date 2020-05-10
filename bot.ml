@@ -32,13 +32,13 @@ let rec max_index problst maxprob index : int=
 
 (* looks at all dice and returns the dice with the greatest likely roll  *)
 let rec bot_die brd st = 
-  print_endline "entered bot die";
+  (* print_endline "entered bot die"; *)
   let current_pos = State.curr_pos st in 
-  print_endline "git curr pos";
+  (* print_endline "git curr pos"; *)
   let bot_dice= List.nth (State.dice_list st) (State.get_curr_player st) in
-  print_endline "entered bot_dice";
+  (* print_endline "entered bot_dice"; *)
   let maxprob = List.fold_left(fun x acc -> max x acc) 0.0 (problst brd current_pos bot_dice) in 
-  print_endline "got max prob";
+  (* print_endline "got max prob"; *)
   (* print_string  "bots dice "; pp_list print_string bot_die; *)
   (* print_string  "/n best choice "; print_string (List.nth bot_dice (max_index (problst brd bot_dice) maxprob 0));
      print_string  "/n current choice "; print_string (curr_die st); *)
