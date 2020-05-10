@@ -5,6 +5,30 @@ open Common
 open Command
 open State
 
+(* TEST PLAN 
+   1. The Board and Command modules are automatically tested by the OUnit test 
+    suite. Only the initial state of the game is tested by the OUnit test suite. 
+    It is impossible to test either other states of the game or the graphical
+    interface through the automatic test suite as theu require user input (I/O).
+    The Common, Bot, State, Gui and the Main modules were tested manually. 
+   2. We used a combination of Black-Box testing and White-Box testing for 
+    our tests. Using the documentation we had written in our .mli files, 
+    we gave the functions both normal inputs as well as boundary cases and 
+    checked if we got the expected behaviour. Modules Board, Command and the 
+    initial state in State were tested by Black-Box testing. We also had to 
+    look through different branches of execution in our functions which helped 
+    us decide what representative inputs would be enough to ensure a good code 
+    coverage. Modules Board and Command were tested by White-Box testing. 
+   3. Our testing approach made use of highly successful testing methods like 
+    Black-Box and White-Box testing - which usually guarantee a high degree 
+    of code correctness when used corectly. We tested our system manually 
+    through with multiple game files and varying inputs like the number of
+    players, the number of bots, invalid files, etc. to ensure the robustness 
+    of our system. We also used code review and pair programming as 
+    validation paradigms during coding, writing specifications and testing. 
+    As each team member approached the system with fresh eyes, we are
+    confident in the correctness of the system. *)
+
 (********************************************************************
    Helper functions for testing the Board module. 
  ********************************************************************)

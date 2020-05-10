@@ -13,7 +13,7 @@ let check_win_cond brd st =
     let cur_p = if State.get_curr_player st = 0 then State.n_players st else
         State.get_curr_player st in
     let curr_player_str = string_of_int (cur_p) in
-    let message = "Congratulations! Player " ^curr_player_str^ " won!" in
+    let message = "Player "^curr_player_str^ " won!" in
     draw_game brd st;
     draw_win message brd;
     ANSITerminal.(print_string [green] ("\n"^message^"\n"));
