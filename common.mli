@@ -1,6 +1,4 @@
-(********************************************************************
-   Holds commonly used functions
- ********************************************************************)
+(** This module holds commonly used functions. *)
 
 (** [select_elem x l] takes an index [x] and a list [l] and returns the 
     element at that index. *)

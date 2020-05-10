@@ -1,10 +1,7 @@
-(********************************************************************
-   Representation of a static board game. 
-
-   This module represents the data stored in the game files, including
-   the tiles, dice, snakes and ladders.  It handles loading of that data 
-   from JSON as well as querying the data.
- ********************************************************************)
+(** Representation of a static board game. 
+    This module represents the data stored in the game files, including
+    the tiles, dice, snakes and ladders.  It handles loading of that data 
+    from JSON as well as querying the data. *)
 
 (** The abstract type of values representing a game board. *)
 type t
@@ -57,7 +54,8 @@ val find_locate : t -> dice_id -> tile_id
 
 (** [additional_move brd pos] is the resulting position of interacting with
     either a ladder or a snake at tile pos if either of them exists. 
-    Requires: [pos] is a tile within {0 ... n-1}
+    Requires: [pos] is a tile within 0 to n-1 where n is the number of tiles 
+    on the board [brd].
     Raises: [TileOutOfRange pos] if [pos] is out of the range of tiles on
     the board. *)
 val additional_move: t -> tile_id -> tile_id

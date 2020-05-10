@@ -1,7 +1,6 @@
-open Board
-(********************************************************************
-  This module parses player commands.
-********************************************************************)
+(** This module parses player commands. *)
+
+open Board 
 
 (** The type [command] represents a player command that is decomposed
     into a verb and possibly an object phrase. Possible commands are
@@ -11,7 +10,7 @@ type command =
   | Roll 
   | Show_Dice 
   | Pick_Die of dice_id
-  
+
 (** Raised when an empty command is parsed. *)
 exception Empty
 
@@ -19,9 +18,9 @@ exception Empty
 exception Malformed
 
 (** [parse str] takes input phrase [str] matches it to the correct 
-command.
-Raises: [Empty] if [str] is the empty string or only contains spaces.
-Raises: [Malformed] if [str] not written in the correct command format. 
+    command.
+    Raises: [Empty] if [str] is the empty string or only contains spaces.
+    Raises: [Malformed] if [str] not written in the correct command format. 
         A command is malformed if it does not satisfy at least one if the 
         following: 
         1. On removing leading and trailing spaces, [str] is "quit" or "roll"
@@ -33,6 +32,6 @@ Raises: [Malformed] if [str] not written in the correct command format.
 val parse : string -> command
 
 (** [filter_spaces strlist] is the list of strings in [strlist] that are 
-not empty. *)
+    not empty. *)
 val filter_spaces: string list -> string list 
 

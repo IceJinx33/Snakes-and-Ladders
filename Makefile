@@ -20,7 +20,7 @@ play:
 	$(OCAMLBUILD) $(MAIN) && ./$(MAIN)
 
 zip:
-	zip snakes-and-ladders.zip *.ml* *.json _tags Makefile
+	zip sandn.zip *.ml* *.json _tags Makefile
 
 docs: docs-public docs-private
 	

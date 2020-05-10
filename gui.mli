@@ -1,9 +1,8 @@
-(********************************************************************
+(**
    Graphical visualization of the board game. 
-
    This module contains drawing functions that help create a 
    graphical interface for the board game.
- ********************************************************************)
+*)
 
 (** [draw_game brd st] draws the game board [brd] and the current positions of 
     the players in state [st] of the game. 
