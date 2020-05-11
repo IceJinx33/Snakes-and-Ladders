@@ -19,4 +19,5 @@ Snakes-and-Ladders features
 - Customizable boards
 - Customizable dice with faces and probabilities
 - A bot that can be selected as extra players in game
+- Upto 5 players in a game (including bots)
 - A graphics window displaying the board along with the tile numbers, snakes, ladders as well as the positions of the players
