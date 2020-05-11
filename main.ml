@@ -17,6 +17,8 @@ let check_win_cond brd st =
     draw_game brd st;
     draw_win message brd;
     ANSITerminal.(print_string [green] ("\n"^message^"\n"));
+    ANSITerminal.(print_string [red] ("Quitting!!\n"));
+    for i=1 to 1000000 do for j=1 to 100 do () done done;
     exit 0;
   else ()
 
@@ -31,7 +33,7 @@ let handle_pick_die brd st dice_id =
                                                            ["That die is ";
                                                             "unavailable, ";
                                                             "try again.";
-                                                            "\n"]));
+                                                            "\n"]));                                                    
     print_string  "> ";
     st'
   | Changed_Die st' -> ANSITerminal.(print_string [green]
@@ -57,7 +59,7 @@ let result_roll brd st print_roll_res roll_res new_tile =
     ANSITerminal.(print_string [red]
                     (String.concat "" ["\n"; "That roll is not valid,";
                                        "you will exceed the number of tiles ";
-                                       "on the board and go into the ";
+                                       "on the board and ";"\n go into the ";
                                        "unknown. \n"])) ;
     print_string  "> "; st'
   |_ -> st
@@ -69,7 +71,7 @@ let handle_roll brd st =
   let roll_res = State.roll brd st in
   let print_roll_res st = 
     let roll_val = State.last_roll st in
-    ANSITerminal.(print_string [white] ("\nRolled a "^roll_val^".\n"));
+    ANSITerminal.(print_string [blue] ("\nRolled a "^roll_val^".\n"));
   in
   let new_tile st= State.prev_player_pos st in 
   result_roll brd st print_roll_res roll_res new_tile
@@ -79,9 +81,14 @@ let handle_roll brd st =
 let handle_show_dice brd st = 
   let dice = State.curr_dice st in
   (* Print here *)
-  ANSITerminal.(
-    print_string [green] (pp_list pp_string dice ^"\n");
-  );
+  List.iter (fun x -> ANSITerminal.(
+      print_string [blue] ("Die: ");
+      print_string [green] (pp_string x ^"\n");
+      print_string [blue] ("Faces: ");
+      print_string [green] (pp_list pp_int (get_faces brd x) ^"\n");
+      print_string [blue] ("Probabilities: ");
+      print_string [green] (pp_list pp_float (get_probs brd x) ^"\n");
+    )) dice;
   print_string  "> ";
   (* Return same state *)
   st
@@ -98,10 +105,10 @@ let print_move_prompt brd st =
   let pp_probs = pp_list pp_float curr_die_probs in
   ANSITerminal.(
     print_string [green] ("\nPlayer "^ curr_player_str ^" \n");
-    print_string [white] ("You're on tile "^curr_pos_str^".\n");
-    print_string [white] ("Currently in your hand is die "^curr_die_did^".\n");
-    print_string [white] ("It has faces: "^pp_faces^" with respective "^
-                          "probabilities: "^pp_probs^"\n");
+    print_string [blue] ("You're on tile "^curr_pos_str^".\n");
+    print_string [blue] ("Currently in your hand is die "^curr_die_did^".\n");
+    print_string [blue] ("It has faces: "^pp_faces^" with respective "^
+                         "probabilities: "^pp_probs^"\n");
     print_string [red] ("Please choose an action\n");
   );
   print_string  "> ";
@@ -117,8 +124,8 @@ let rec make_move brd st print_prompt: unit =
     let curr_pos_str = string_of_int (State.curr_pos st) in 
     ANSITerminal.(print_string [green] ("\nBOT : Player "^curr_player_str^
                                         " is rolling. \n"));
-    ANSITerminal.(print_string [white] ("It is currently on tile "^
-                                        curr_pos_str^"."));
+    ANSITerminal.(print_string [blue] ("It is currently on tile "^
+                                       curr_pos_str^"."));
     let st' brd st  = handle_pick_die brd st (bot_die brd st) in
     if (bot_die brd st = curr_die st) 
     then make_move brd (handle_roll brd st) true 
